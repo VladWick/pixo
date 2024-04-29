@@ -39,4 +39,4 @@ build/
 
 ### Node js ###
 /frontend-service/node_modules**
-frontend-service/build**
+/frontend-service/build**
