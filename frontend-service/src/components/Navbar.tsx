@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -10,14 +10,24 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import {useNavigate} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {jwtDecode} from 'jwt-decode'
-import {TokenModel} from '../domain/Token';
-import {login, logout, register} from '../utils/Utils';
+import {TokenModel} from '../domain/TokenModel';
+import {baseUrl, login, logout, register} from '../utils/Utils';
+import {ProductApi} from '../api/ProductApi';
+import {CategoryModel} from '../domain/CategoryModel';
 
 function NavigationBar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [categories, setCategories] = useState<CategoryModel[]>([]);
+  // let categories: CategoryModel = useRef();
+
+  async function fetchCategories() {
+    const retrievedCategories = await ProductApi.getAllCategories();
+    console.log("RESPONSE categories: " + JSON.stringify(retrievedCategories));
+    setCategories(retrievedCategories);
+  }
 
   useEffect(() => {
     const accessTokenRegex = /access_token=([^&]+)/;
@@ -27,17 +37,43 @@ function NavigationBar() {
       const accessToken = isMatch[1];
       const decodedAccessToken: TokenModel = jwtDecode(accessToken);
       const name: string = decodedAccessToken.name;
-      const email: string = decodedAccessToken.name;
+      const email: string = decodedAccessToken.email;
+      const userId: string = decodedAccessToken.sid;
 
+      const roles = decodedAccessToken.realm_access.roles;
+      if (roles.includes("seller")) {
+        console.log("SELLER");
+        Cookies.set("role", "seller");
+      } else {
+        Cookies.set("role", "user");
+      }
       Cookies.set("access_token", accessToken);
       Cookies.set("email", email);
       Cookies.set("name", name);
+      Cookies.set("userId", userId);
+
+      console.log("Access: " + accessToken);
+      console.log("userId: " + userId);
 
       setEmail(email);
       setName(name);
       setIsLoggedin(true);
     }
+
+    fetchCategories();
+
+    fetch(baseUrl + '/api/product/category', {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(response => console.log("RESPONSE categories: " + response))
+      .catch(err => console.error(err));
+
   }, []);
+
+  const toAccount = () => {
+    navigate('/account');
+  }
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -51,10 +87,9 @@ function NavigationBar() {
             navbarScroll
           >
             <NavDropdown title="Каталог" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#category3">Category 1</NavDropdown.Item>
-              <NavDropdown.Item href="#category4">Category 2</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#category5">Category 3</NavDropdown.Item>
+              {categories.map((category) => (
+                <NavDropdown.Item key={category.id} href="#category3">{category.title}</NavDropdown.Item>
+              ))}
             </NavDropdown>
           </Nav>
 
@@ -71,7 +106,7 @@ function NavigationBar() {
           {isLoggedin ?
             <Nav>
               <NavDropdown title={name} id="navbarScrollingDropdown">
-                <NavDropdown.Item>Личный кабинет</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate('/account')}>Личный кабинет</NavDropdown.Item>
                 <NavDropdown.Item>Избранное</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => logout()}>Выйти</NavDropdown.Item>
               </NavDropdown>

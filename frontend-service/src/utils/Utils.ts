@@ -1,3 +1,5 @@
+export const baseUrl = "http://localhost:8080";
+
 const server = "localhost:8181"
 const realm = "pixo"
 const springBootClient = "pixo-client";

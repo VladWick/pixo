@@ -1,26 +1,55 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+//  "compilerOptions": {
+//    "target": "es5",
+//    "lib": [
+//      "dom",
+//      "dom.iterable",
+//      "esnext"
+//    ],
+//    "allowJs": true,
+//    "skipLibCheck": true,
+//    "esModuleInterop": true,
+//    "allowSyntheticDefaultImports": true,
+//    "strict": true,
+//    "forceConsistentCasingInFileNames": true,
+//    "noFallthroughCasesInSwitch": true,
+//    "module": "esnext",
+//    "moduleResolution": "node",
+//    "resolveJsonModule": true,
+//    "isolatedModules": true,
+//    "noEmit": true,
+//    "jsx": "react-jsx",
+//    "typeRoots" : ["node_modules/@types", "src/images"]
+//  },
+ "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "sourceMap": true,
+    "declaration": false,
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
-  },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+   "allowSyntheticDefaultImports": true
+ },
   "include": [
     "src"
   ]
+
+  // "compilerOptions": {
+  //    "module": "commonjs",
+  //    "target": "es6",
+  //    "jsx": "react",
+  //    "sourceMap": true,
+  //    "declaration": false,
+  //    "moduleResolution": "node",
+  //    "emitDecoratorMetadata": true,
+  //    "experimentalDecorators": true,
+  //    "typeRoots": [
+  //      "node_modules/@types"
+  //    ]
+  //  }
 }

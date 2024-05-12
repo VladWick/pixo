@@ -5,8 +5,20 @@ import Cookies from 'js-cookie';
 
 function Home() {
 
+  // categories
+  // products
+
   useEffect(() => {
     console.log("LOG email cookies: " + Cookies.get("email"));
+
+    // Get all products
+    // axios.request({
+    //   method: "GET",
+    //   url: path
+    // }).then(response => {
+    //   console.log(response.data);
+    // });
+
   }, []);
 
   return (

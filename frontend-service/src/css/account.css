@@ -1,0 +1,13 @@
+.account {
+    display: flex;
+    width: 100%;
+}
+
+.menu {
+    width: 30%;
+}
+
+.current-info {
+    width: 70%;
+    border: 1px black solid;
+}

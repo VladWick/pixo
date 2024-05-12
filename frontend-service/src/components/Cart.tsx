@@ -9,11 +9,13 @@ function Cart() {
 
   const toPlaceOrder = () => {
     const access_token = Cookies.get("access_token");
-    const username = Cookies.get("username");
+    const username = Cookies.get("name");
+    console.log("access: " + access_token);
+    console.log("name: " + username);
     if (!!access_token && !!username) {
-      login();
-    } else {
       navigate("/order");
+    } else {
+      login();
     }
   }
 

@@ -7,6 +7,7 @@ import Account from './components/account/Account';
 import Cart from './components/Cart';
 import NavigationBar from './components/Navbar';
 import PlaceOrder from './components/PlaceOrder';
+import ProductForm from './components/account/ProductForm';
 
 function App() {
   return (
@@ -16,9 +17,12 @@ function App() {
         <Route path="/" element={<Home />} />
 
         <Route path="/account" element={<Account />} />
+        <Route path="/account/product" element={<ProductForm />} />
 
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<PlaceOrder />} />
+
+
       </Routes>
     </div>
   );

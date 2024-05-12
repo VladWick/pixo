@@ -1,15 +1,21 @@
 package com.vladwick.productservice.dto;
 
-import lombok.*;
+import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ProductRequest {
-    private String name;
+    private Long id;
+    private String title;
     private String description;
-    private BigDecimal price;
+    private Long price;
+    private Long categoryId;
+    private Date createDate;
+    private Date lastUpdateDate;
+    private Long amountInStock;
+    private Long sellerId;
+    private Boolean isConfirmForSale;
+    private MultipartFile image;
 }
