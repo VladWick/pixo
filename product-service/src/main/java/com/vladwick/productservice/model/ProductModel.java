@@ -52,4 +52,7 @@ public class ProductModel {
     @Column(name = "IMAGE_ID")
     private Long imageId;
 
+    @Column(name = "IMAGE_LINK")
+    private String imageLink;
+
 }

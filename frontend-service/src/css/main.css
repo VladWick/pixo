@@ -5,3 +5,23 @@
     margin-top: 20px;
 }
 
+.home {
+    margin: 0;
+
+    .main-banner-wrapper {
+
+        .main-banner {
+
+            .banner-image-wrapper {
+                margin: 10px;
+
+                .banner-image {
+                    width: 100%;
+                    height: 300px;
+                    object-fit: cover;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}

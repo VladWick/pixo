@@ -6,5 +6,6 @@ export interface TokenModel {
   email: string;
   name: string;
   realm_access: Roles;
-  sid: string
+  sid: string;
+  preferred_username: string;
 }

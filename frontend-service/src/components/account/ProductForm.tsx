@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import '../../css/account.css';
-import '../../css/product-form.css';
+import '../../css/component/product-form.css';
 import {InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography} from '@mui/material';
 import Cookies from 'js-cookie';
 import Button from 'react-bootstrap/Button';
@@ -27,7 +27,8 @@ function ProductForm() {
     amountInStock: null,
     sellerId: null,
     isConfirmForSale: false,
-    imageId: null
+    imageId: null,
+    imageLink: null
   });
 
   async function fetchCategories() {

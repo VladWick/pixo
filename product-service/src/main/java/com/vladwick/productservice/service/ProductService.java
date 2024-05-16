@@ -1,15 +1,11 @@
 package com.vladwick.productservice.service;
 
-import com.vladwick.productservice.dto.ProductRequest;
 import com.vladwick.productservice.model.CategoryModel;
-import com.vladwick.productservice.model.ImageModel;
 import com.vladwick.productservice.model.ProductModel;
 import com.vladwick.productservice.repository.ProductRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,8 +61,20 @@ public class ProductService {
         return productRepository.getAllBySellerId(sellerId);
     }
 
-    public List<ProductModel> searchByCategory(String categoryTitle) {
+    public List<ProductModel> searchByCategoryId(Long categoryId) {
+//        CategoryModel categoryModel = categoryService.findCategoryByTitle(categoryTitle);
+        CategoryModel categoryModel = categoryService.getCategoryById(categoryId);
+
+        if (categoryModel == null) {
+            return new ArrayList<>();
+        } else {
+            return productRepository.getAllByCategoryId(categoryModel.getId());
+        }
+    }
+
+    public List<ProductModel> searchByCategoryTitle(String categoryTitle) {
         CategoryModel categoryModel = categoryService.findCategoryByTitle(categoryTitle);
+//        CategoryModel categoryModel = categoryService.getCategoryById(categoryId);
 
         if (categoryModel == null) {
             return new ArrayList<>();
@@ -81,7 +89,7 @@ public class ProductService {
     }
 
     public List<ProductModel> searchByCategoryAndWord(String keyword, String categoryTitle) {
-        List<ProductModel> productsByCategory = searchByCategory(categoryTitle);
+        List<ProductModel> productsByCategory = searchByCategoryTitle(categoryTitle);
         return search(productsByCategory, keyword);
     }
 
@@ -94,7 +102,9 @@ public class ProductService {
         }
         for (ProductModel product: products) {
             if (product.getDescription().contains(keyword)) {
-                foundProducts.add(product);
+                if (!foundProducts.contains(product)) {
+                    foundProducts.add(product);
+                }
             }
         }
         return foundProducts;

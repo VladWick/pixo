@@ -1,10 +1,13 @@
 package com.vladwick.orderservice.service;
 
 import com.vladwick.orderservice.dto.*;
+import com.vladwick.orderservice.event.OrderPlacedEvent;
 import com.vladwick.orderservice.model.OrderModel;
 import com.vladwick.orderservice.model.OrderProductsModel;
 import com.vladwick.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -14,11 +17,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
-
     private final OrderProductsService orderProductsService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Long placeOrder(OrderRequest form, Errors errors) {
         OrderModel order = new OrderModel();
@@ -26,14 +30,19 @@ public class OrderService {
         Long orderId = orderRepository.save(order).getId();
 
         List<ProductInOrder> productsInOrder = form.getProductsInOrder();
+
         for (ProductInOrder product: productsInOrder) {
             OrderProductsModel orderProduct = new OrderProductsModel();
             orderProduct.setProductId(product.getProductId());
             orderProduct.setAmount(product.getAmount());
             orderProduct.setWishes(product.getWishes());
+            orderProduct.setFinalPrice(product.getFinalPrice());
             orderProduct.setOrderId(orderId);
             orderProductsService.save(orderProduct);
         }
+
+        // kafka
+        applicationEventPublisher.publishEvent(new OrderPlacedEvent(this, order.getId().toString()));
 
         return orderId;
     }
@@ -64,6 +73,35 @@ public class OrderService {
         }
 
         return response;
+    }
+
+    public List<OrderResponse> getAll() {
+        List<OrderModel> orders = orderRepository.findAll();
+
+        List<OrderResponse> result = new ArrayList<>();
+
+        for (OrderModel order: orders) {
+            OrderResponse resp = new OrderResponse();
+            resp.setOrderId(order.getId());
+            resp.setUserId(order.getUserId());
+
+            List<OrderProductsModel> products = orderProductsService.getAllByOrderId(order.getId());
+            List<ProductInOrder> productsInOrder = new ArrayList<>();
+            for (OrderProductsModel product: products) {
+                ProductInOrder productInOrder = new ProductInOrder();
+                productInOrder.setProductId(product.getId());
+                productInOrder.setAmount(product.getAmount());
+                productInOrder.setFinalPrice(product.getFinalPrice());
+                productInOrder.setWishes(product.getWishes());
+
+                productsInOrder.add(productInOrder);
+            }
+
+            resp.setProductsInOrder(productsInOrder);
+            result.add(resp);
+        }
+
+        return result;
     }
 
 

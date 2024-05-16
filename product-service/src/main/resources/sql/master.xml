@@ -21,4 +21,8 @@
         <sqlFile path="migrations/4-create-image-table.sql" relativeToChangelogFile="true" />
     </changeSet>
 
+    <changeSet id="5-fill-products" author="vladwick">
+        <sqlFile path="migrations/5-fill-products.sql" relativeToChangelogFile="true" />
+    </changeSet>
+
 </databaseChangeLog>

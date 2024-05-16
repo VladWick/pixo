@@ -9,5 +9,6 @@ export interface ProductModel {
   amountInStock: number,
   sellerId: string,
   isConfirmForSale: boolean,
-  imageId: number
+  imageId: number,
+  imageLink: string
 }

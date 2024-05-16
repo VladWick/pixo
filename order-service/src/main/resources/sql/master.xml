@@ -9,7 +9,7 @@
         <sqlFile path="migrations/1-orders-table.sql" relativeToChangelogFile="true" />
     </changeSet>
 
-    <changeSet id="1-order-products-table" author="vladwick">
+    <changeSet id="2-order-products-table" author="vladwick">
         <sqlFile path="migrations/2-order-products-table.sql" relativeToChangelogFile="true" />
     </changeSet>
 

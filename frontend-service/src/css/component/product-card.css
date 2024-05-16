@@ -1,0 +1,99 @@
+.product-card-container {
+    width: 100%;
+    margin-left: 2.5%;
+
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    grid-gap: 2.5%;
+
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+
+        .image-wrapper {
+            height: 300px;
+            cursor: pointer;
+
+            .product-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                overflow: hidden;
+            }
+        }
+
+        .product-title {
+            font-family: 'Righteous', sans-serif;
+            margin-top: 7px;
+            margin-left: 7px;
+
+            cursor: pointer;
+        }
+
+        .product-price {
+            margin-left: 7px;
+        }
+
+        .category-link-item {
+            display: inline-block;
+
+            margin-left: 7px;
+            margin-top: 7px;
+            margin-bottom: 5px;
+
+            padding-left: 15px;
+            padding-right: 15px;
+
+            border-radius: 25px;
+            color: white;
+            background-color: #81c784;
+            cursor: pointer;
+        }
+
+        .button-wrapper {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+
+            margin-top: auto;
+            margin-bottom: 5px;
+
+            .details-button {
+                padding: 5px 20px;
+                border-radius: 24px;
+                cursor: pointer;
+
+                background: transparent;
+                color: rgba(0, 212, 255, 0.9);
+                border: 1px solid rgba(0, 212, 255, 0.6);
+                transition: all .3s ease;
+            }
+
+            .details-button:hover {
+                transition: all .3s ease;
+                transform: scale(1.125);
+                border-color: rgba(0, 212, 255, 0.6);
+            }
+
+            .cart-button {
+                border: none;
+                padding: 10px 20px;
+                border-radius: 24px;
+                cursor: pointer;
+
+                background: rgba(0, 212, 255, 0.9);
+                color: rgba(255,255,255,0.95);
+                font-weight: bold;
+                transition: all .3s ease;
+            }
+
+            .cart-button:hover {
+                transform: scale(1.125);
+                border-color: rgba(255, 255, 255, 0.9);
+                filter: drop-shadow(0 10px 5px rgba(0,0,0,0.125));
+                transition: all .3s ease;
+            }
+        }
+    }
+}

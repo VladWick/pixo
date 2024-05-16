@@ -26,4 +26,7 @@ public class ReviewService {
         return reviewRepository.getAllByUserId(userId);
     }
 
+    public List<ReviewModel> getAllByProductId(Long productId) {
+        return reviewRepository.getAllByProductId(productId);
+    }
 }

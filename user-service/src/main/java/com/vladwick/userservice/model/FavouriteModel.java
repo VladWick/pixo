@@ -9,7 +9,7 @@ import lombok.Data;
 public class FavouriteModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_SEQ_FAVOURITES")
     @SequenceGenerator(name = "GEN_SEQ_FAVOURITES", sequenceName = "SEQ_FAVOURITES", allocationSize = 1)
     @Column(name = "ID", nullable = false)
     private Long id;

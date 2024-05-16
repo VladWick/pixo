@@ -1,6 +1,7 @@
 package com.vladwick.userservice.service;
 
 import com.vladwick.userservice.model.FavouriteModel;
+import com.vladwick.userservice.model.ReviewModel;
 import com.vladwick.userservice.repository.FavouriteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,4 +19,7 @@ public class FavouriteService {
         return favouriteRepository.getAllByUserId(userId);
     }
 
+    public FavouriteModel addFavourite(FavouriteModel favouriteModel) {
+        return favouriteRepository.save(favouriteModel);
+    }
 }

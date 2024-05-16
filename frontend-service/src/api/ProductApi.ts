@@ -1,10 +1,8 @@
-import {BaseApi} from './BaseApi';
 import {CategoryModel} from '../domain/CategoryModel';
 import {ProductModel} from '../domain/ProductModel';
-import {ProductRequest} from '../domain/ProductRequest';
 import {baseUrl} from '../utils/Utils';
 
-class Api extends BaseApi {
+class Api {
 
   getAllCategories(): Promise<CategoryModel[]> {
     return fetch(baseUrl + '/api/product/category', {
@@ -43,6 +41,27 @@ class Api extends BaseApi {
     });
   }
 
+  searchProductsByCategory(categoryId): Promise<ProductModel[]> {
+    return fetch(baseUrl + `/api/product/search/category?categoryId=${categoryId}`, {
+      method: 'GET',
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json() as Promise<ProductModel[]>;
+    });
+  }
+
+  searchByWord(keyword: string): Promise<ProductModel[]> {
+    return fetch(baseUrl + `/api/product/search/word?keyword=${keyword}`, {
+      method: 'GET',
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json() as Promise<ProductModel[]>;
+    });
+  }
 }
 
 export const ProductApi = new Api();

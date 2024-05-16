@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
-
+import {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -14,6 +13,7 @@ import {TokenModel} from '../domain/TokenModel';
 import {baseUrl, login, logout, register} from '../utils/Utils';
 import {ProductApi} from '../api/ProductApi';
 import {CategoryModel} from '../domain/CategoryModel';
+import '../css/navbar.css';
 
 function NavigationBar() {
   const navigate = useNavigate();
@@ -21,13 +21,7 @@ function NavigationBar() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [categories, setCategories] = useState<CategoryModel[]>([]);
-  // let categories: CategoryModel = useRef();
-
-  async function fetchCategories() {
-    const retrievedCategories = await ProductApi.getAllCategories();
-    console.log("RESPONSE categories: " + JSON.stringify(retrievedCategories));
-    setCategories(retrievedCategories);
-  }
+  const [keyword, setKeyword] = useState('');
 
   useEffect(() => {
     const accessTokenRegex = /access_token=([^&]+)/;
@@ -39,28 +33,33 @@ function NavigationBar() {
       const name: string = decodedAccessToken.name;
       const email: string = decodedAccessToken.email;
       const userId: string = decodedAccessToken.sid;
-
+      const preferred_username: string = decodedAccessToken.preferred_username;
       const roles = decodedAccessToken.realm_access.roles;
-      if (roles.includes("seller")) {
-        console.log("SELLER");
+
+      if (roles.includes("moderator")) {
+        Cookies.set("role", "moderator");
+      } else if (roles.includes("seller")) {
         Cookies.set("role", "seller");
       } else {
         Cookies.set("role", "user");
       }
+
       Cookies.set("access_token", accessToken);
       Cookies.set("email", email);
       Cookies.set("name", name);
       Cookies.set("userId", userId);
-
-      console.log("Access: " + accessToken);
-      console.log("userId: " + userId);
+      Cookies.set("preferred_username", preferred_username);
 
       setEmail(email);
       setName(name);
       setIsLoggedin(true);
     }
 
-    fetchCategories();
+    ProductApi.getAllCategories().then((resp) => {
+      setCategories(resp);
+    }).catch((err) => {
+      console.log('LOG err: ' + JSON.stringify(err));
+    });
 
     fetch(baseUrl + '/api/product/category', {
       method: 'GET',
@@ -71,14 +70,14 @@ function NavigationBar() {
 
   }, []);
 
-  const toAccount = () => {
-    navigate('/account');
+  const handleSearchChange = (event : React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
   }
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand onClick={() => navigate("/")}>Pixo</Navbar.Brand>
+        <Navbar.Brand className={'main-title'} onClick={() => navigate("/")}>Pixo</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -86,9 +85,14 @@ function NavigationBar() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <NavDropdown title="Каталог" id="navbarScrollingDropdown">
+            <NavDropdown className={'catalog-text'} title="Каталог" id="navbarScrollingDropdown">
               {categories.map((category) => (
-                <NavDropdown.Item key={category.id} href="#category3">{category.title}</NavDropdown.Item>
+                <NavDropdown.Item
+                  key={category.id}
+                  onClick={() => navigate('/category', { state: category})}
+                >
+                  {category.title}
+                </NavDropdown.Item>
               ))}
             </NavDropdown>
           </Nav>
@@ -99,8 +103,9 @@ function NavigationBar() {
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              onChange={handleSearchChange}
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success" onClick={() => navigate('/search', { state: {"word" : keyword} })} >Search</Button>
           </Form>
 
           {isLoggedin ?
@@ -117,7 +122,14 @@ function NavigationBar() {
               <Button variant="outline-primary" className="m-2" onClick={() => register()}>Зарегистрироваться</Button>
             </Nav>
           }
-          <Button variant="outline-danger" className="m-2" onClick={() => navigate("/cart")} >Корзина</Button>
+          <div className={'cart-image-wrapper'}>
+            <img
+              className={'cart-image'}
+              src="https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/shopping-circle-blue-512.png"
+              alt="cart-image"
+              onClick={() => navigate("/cart")}
+            />
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

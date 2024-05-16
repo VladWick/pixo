@@ -22,17 +22,20 @@ public class OrderController {
 
     @PostMapping("place")
     @ResponseStatus(HttpStatus.CREATED)
-    public Long placeOrder(OrderRequest form, Errors errors) {
+    public Long placeOrder(@RequestBody OrderRequest form, Errors errors) {
         Long orderId = orderService.placeOrder(form, errors);
-//        check(errors);
         return orderId;
+    }
+
+    @GetMapping("")
+    public List<OrderResponse> getAll() {
+        return orderService.getAll();
     }
 
     @GetMapping("{userId}")
     public List<OrderResponse> getAllByUserId(String userId) {
         return orderService.getAllByUserId(userId);
     }
-
 
 //    @PostMapping()
 //    @ResponseStatus(HttpStatus.CREATED)

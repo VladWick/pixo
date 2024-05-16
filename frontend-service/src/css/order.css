@@ -1,0 +1,37 @@
+.order {
+
+    .order-title {
+        font-size: 24px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        margin-left: 20px;
+    }
+
+    .customization-wrapper {
+        margin-top: 25px;
+        margin-bottom: 0;
+        margin-left: 20px;
+
+        .customization-title {
+            font-size: 22px;
+            margin-bottom: 0;
+        }
+
+        .customization-subtitle {
+            font-size: 20px;
+            /*margin: 0;*/
+        }
+
+        .customization-input {
+            width: 500px;
+        }
+
+        .order-button-wrapper {
+            margin-top: 25px;
+
+            .order-button {
+
+            }
+        }
+    }
+}

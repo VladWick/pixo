@@ -9,7 +9,7 @@ import lombok.Data;
 public class ReviewModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_SEQ_REVIEWS")
     @SequenceGenerator(name = "GEN_SEQ_REVIEWS", sequenceName = "SEQ_REVIEWS", allocationSize = 1)
     @Column(name = "ID", nullable = false)
     private Long id;
@@ -20,6 +20,6 @@ public class ReviewModel {
     @Column(name = "PRODUCT_ID")
     private Long productId;
 
-    @Column(name = "TEXT")
+    @Column(name = "REVIEW_TEXT")
     private String text;
 }

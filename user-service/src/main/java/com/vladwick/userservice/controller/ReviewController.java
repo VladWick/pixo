@@ -11,7 +11,7 @@ import com.vladwick.userservice.service.ReviewService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/review")
+@RequestMapping("api/user/review")
 @RequiredArgsConstructor
 @Slf4j
 public class ReviewController {
@@ -25,10 +25,16 @@ public class ReviewController {
     }
 
 
-    @GetMapping("{userId}")
+    @GetMapping("user/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewModel> getAllByUserId(@PathVariable String userId) {
         return reviewService.getAllByUserId(userId);
+    }
+
+    @GetMapping("product/{productId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReviewModel> getAllByProductId(@PathVariable Long productId) {
+        return reviewService.getAllByProductId(productId);
     }
 
     @PostMapping("")
